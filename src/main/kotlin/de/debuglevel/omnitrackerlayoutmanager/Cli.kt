@@ -6,13 +6,17 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
 import de.debuglevel.omnitrackerdatabasebinding.OmnitrackerDatabase
+import mu.KotlinLogging
 import java.io.File
+
+private val logger = KotlinLogging.logger {}
 
 class OmnitrackerLayoutManager : CliktCommand() {
     override fun run() = Unit
 }
 
 class Import : CliktCommand(help = "Import layout") {
+    private val id: Int by argument("layout-id", help = "The ID of the layout to update").int()
     private val importFile: File by argument("importfile", help = "The file to import").file(
         folderOkay = false,
         readable = true,
@@ -20,7 +24,19 @@ class Import : CliktCommand(help = "Import layout") {
     )
 
     override fun run() {
-        echo("Importing layout...")
+        logger.debug("Getting current layout from database...")
+        val omnitrackerDatabase = OmnitrackerDatabase()
+        val layout = omnitrackerDatabase.layouts[id]
+
+        if (layout == null) {
+            echo("Given ID $id does not exist.", err = true)
+        } else {
+            logger.debug("Reading report data from file...")
+            val reportData = importFile.readBytes()
+
+            logger.debug("Updating report data in database...")
+            omnitrackerDatabase.updateLayoutReportData(layout, reportData)
+        }
     }
 }
 

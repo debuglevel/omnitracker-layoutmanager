@@ -38,7 +38,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    compile "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.9"
+    compile "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.10-SNAPSHOT"
 
     // Tests
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
@@ -48,9 +48,9 @@ dependencies {
 
     // Logging
     // see http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html for a quick introduction to slf4j
-    compile 'io.github.microutils:kotlin-logging:1.4.9'
-    compile 'org.slf4j:slf4j-api:1.7.5'
-    compile 'org.slf4j:slf4j-simple:1.7.5'
+    compile 'io.github.microutils:kotlin-logging:1.6.22'
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'org.slf4j:slf4j-simple:1.7.25'
 
     // CLI
     implementation 'com.github.ajalt:clikt:1.6.0'

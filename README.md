@@ -1,3 +1,5 @@
+OMNITRACKER stores layouts (templates used for Crystal Reports and Word Mail Merge) in the `layouts` database table. Unfortunately, there seems to be no option to update a file (without temporarily creating a new layout) or to export all existing files.
+
 # Usage
 ```
 Usage: omnitrackerlayoutmanager [OPTIONS] COMMAND [ARGS]...

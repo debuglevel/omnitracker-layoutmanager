@@ -1,4 +1,8 @@
-OMNITRACKER stores layouts (templates used for Crystal Reports and Word Mail Merge) in the `layouts` database table (Base64 encoded). Unfortunately, there seems to be no option to update a file (without temporarily creating a new layout) or to export all existing files in the OMNITRACKER client.
+OMNITRACKER stores layouts (templates used for Crystal Reports and Word
+Mail Merge) in the `layouts` database table (Base64 encoded).
+Unfortunately, there seems to be no option to update a file (without
+temporarily creating a new layout) or to export all existing files in
+the OMNITRACKER client.
 
 # Usage
 ```
@@ -13,15 +17,20 @@ Commands:
   import  Import layout
 ```
 
-An `configuration.properties` file must exist in the working directory (or an environment variable `DATABASE_CONNECTION_STRING` is set) to determine the database:
+An `configuration.properties` file must exist in the working directory
+(or an environment variable `DATABASE_CONNECTION_STRING` is set) to
+determine the database:
 ```
 database.connection.string=jdbc:ucanaccess://OT-Templates.mdb
 #database.connection.string=jdbc:sqlserver://myhost\\MYINSTANCE;databaseName=mydatabase;user=myuser;password=mypassword
 ```
-Microsoft Access (via `ucanaccess` JDBC driver) and MSSQL (official Microsoft JDBC driver) are supported. 
+Microsoft Access (via `ucanaccess` JDBC driver) and MSSQL (official
+Microsoft JDBC driver) are supported.
 
 # Security
-For MSSQL, you should create a special user which can only access the `layouts` table (read for `export`, write for `import`). For `list`, also read-only access to `folders` and `stringTranslations` is needed.    
+For MSSQL, you should create a special user which can only access the
+`layouts` table (read for `export`, write for `import`). For `list`,
+also read-only access to `folders` and `stringTranslations` is needed.
 
 # List all layouts
 ```
@@ -52,4 +61,6 @@ PS> java -jar .\build\libs\omnitrackerlayoutmanager-0.0.1-SNAPSHOT-all.jar list 
 ```
 $ java -jar .\build\libs\omnitrackerlayoutmanager-0.0.1-SNAPSHOT-all.jar import 127 file.data
 ```
-Two backup files will be created (`backup_id-6616_2018-12-24.*`) which contain the binary content of the replaced layout (as if exported via this tool) and the Base64 encoded content (as stored in the database). 
+Two backup files will be created (`backup_id-6616_2018-12-24.*`) which
+contain the binary content of the replaced layout (as if exported via
+this tool) and the Base64 encoded content (as stored in the database).

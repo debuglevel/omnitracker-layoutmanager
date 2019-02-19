@@ -7,8 +7,11 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
 import de.debuglevel.omnitrackerdatabasebinding.OmnitrackerDatabase
+import de.debuglevel.omnitrackerdatabasebinding.models.Layout
 import mu.KotlinLogging
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 private val logger = KotlinLogging.logger {}
 
@@ -29,20 +32,30 @@ class Import : CliktCommand(help = "Import layout") {
     }
 
     companion object {
-        fun importLayout(id: Int, importFile: File) {
+        fun importLayout(layoutId: Int, importFile: File) {
             logger.debug("Getting current layout from database...")
             val omnitrackerDatabase = OmnitrackerDatabase()
-            val layout = omnitrackerDatabase.layouts[id]
+            val layout = omnitrackerDatabase.layouts[layoutId]
 
             if (layout == null) {
-                echo("Given ID $id does not exist.", err = true)
+                echo("Given ID $layoutId does not exist.", err = true)
             } else {
-                logger.debug("Reading report data from file...")
+                createBackup(layoutId, layout)
+
+                logger.debug("Reading report data from file '${importFile.absolutePath}'...")
                 val reportData = importFile.readBytes()
 
                 logger.debug("Updating report data in database...")
                 omnitrackerDatabase.updateLayoutReportData(layout, reportData)
             }
+        }
+
+        private fun createBackup(layoutId: Int, layout: Layout) {
+            val backupDatetime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            val backupBaseFilename = "backup_id-${layoutId}_$backupDatetime"
+            logger.debug("Creating backup to files '$backupBaseFilename.*'...")
+            Export.exportLayout(layout, File("$backupBaseFilename.binary"), false)
+            Export.exportLayout(layout, File("$backupBaseFilename.base64"), true)
         }
     }
 }
@@ -56,14 +69,23 @@ class Export : CliktCommand(help = "Export layout") {
     }
 
     companion object {
-        fun exportLayout(id: Int, exportFile: File) {
+        fun exportLayout(layoutId: Int, exportFile: File) {
             logger.debug("Getting layout from database...")
-            val layout = OmnitrackerDatabase().layouts[id]
+            val layout = OmnitrackerDatabase().layouts[layoutId]
 
             if (layout == null) {
-                echo("Given ID $id does not exist.", err = true)
+                echo("Given ID $layoutId does not exist.", err = true)
             } else {
-                logger.debug("Writing report data to file...")
+                exportLayout(layout, exportFile)
+            }
+        }
+
+        fun exportLayout(layout: Layout, exportFile: File, base64: Boolean = false) {
+            if (base64) {
+                logger.debug("Writing Base64 encoded report data (e.g. original database content) to file '${exportFile.absolutePath}'...")
+                exportFile.writeBytes(layout.reportDataBase64.toByteArray())
+            } else {
+                logger.debug("Writing binary report data to file '${exportFile.absolutePath}'...")
                 exportFile.writeBytes(layout.reportData)
             }
         }

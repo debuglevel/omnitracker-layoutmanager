@@ -17,7 +17,7 @@ class OmnitrackerLayoutManager : CliktCommand() {
 
 class Import : CliktCommand(help = "Import layout") {
     private val id: Int by argument("layout-id", help = "The ID of the layout to update").int()
-    private val importFile: File by argument("importfile", help = "The file to import").file(
+    private val importFile: File by argument("import-file", help = "The file to import").file(
         folderOkay = false,
         readable = true,
         exists = true
@@ -42,7 +42,7 @@ class Import : CliktCommand(help = "Import layout") {
 
 class Export : CliktCommand(help = "Export layout") {
     private val id: Int by argument("layout-id", help = "The ID of the layout to export").int()
-    private val exportFile: File by argument("exportfile", help = "The file to export to").file(folderOkay = false)
+    private val exportFile: File by argument("export-file", help = "The file to export to").file(folderOkay = false)
 
     override fun run() {
         val layout = OmnitrackerDatabase().layouts[id]

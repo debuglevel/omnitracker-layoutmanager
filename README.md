@@ -6,6 +6,7 @@ the OMNITRACKER client.
 
 # Usage
 ```
+$ java -jar .\build\libs\omnitrackerlayoutmanager-0.0.1-SNAPSHOT-all.jar
 Usage: omnitrackerlayoutmanager [OPTIONS] COMMAND [ARGS]...
 
 Options:
@@ -27,12 +28,7 @@ database.connection.string=jdbc:ucanaccess://OT-Templates.mdb
 Microsoft Access (via `ucanaccess` JDBC driver) and MSSQL (official
 Microsoft JDBC driver) are supported.
 
-# Security
-For MSSQL, you should create a special user which can only access the
-`layouts` table (read for `export`, write for `import`). For `list`,
-also read-only access to `folders` and `stringTranslations` is needed.
-
-# List all layouts
+## List all layouts
 ```
 $ java -jar .\build\libs\omnitrackerlayoutmanager-0.0.1-SNAPSHOT-all.jar list
 127	| \(Alle Ordner)\01. ITSM - Change Management\02. RFCs\RFCs - Übersichtsliste
@@ -47,20 +43,26 @@ $ java -jar .\build\libs\omnitrackerlayoutmanager-0.0.1-SNAPSHOT-all.jar list
 213	| \(Alle Ordner)\Deletion Log\Standard throughput statistics
 ```
 
-# Export layout
+## Export layout
 ```
 $ java -jar .\build\libs\omnitrackerlayoutmanager-0.0.1-SNAPSHOT-all.jar export 127 file.data
 ```
 
-# Export all layouts (using PowerShell)
+## Export all layouts (using PowerShell)
 ```
 PS> java -jar .\build\libs\omnitrackerlayoutmanager-0.0.1-SNAPSHOT-all.jar list | ForEach-Object { $_.Split("`t")[0] } | ForEach-Object { java -jar .\build\libs\omnitrackerlayoutmanager-0.0.1-SNAPSHOT-all.jar export $_ "export_$_.data" }
 ```
 
-# Import layout
+## Import layout
 ```
 $ java -jar .\build\libs\omnitrackerlayoutmanager-0.0.1-SNAPSHOT-all.jar import 127 file.data
 ```
 Two backup files will be created (`backup_id-6616_2018-12-24.*`) which
 contain the binary content of the replaced layout (as if exported via
 this tool) and the Base64 encoded content (as stored in the database).
+
+# Security
+For MSSQL, you should create a special user which can only access the
+`layouts` table (read for `export`, write for `import`). For `list`,
+also read-only access to `folders` and `stringTranslations` is needed.
+

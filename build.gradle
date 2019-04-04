@@ -17,6 +17,9 @@ plugins {
     // Gradle dependency update checker; run by "dependencyUpdates" task
     id "com.github.ben-manes.versions" version "0.20.0"
 
+    // Release version with "gradle release"
+    id 'net.researchgate.release' version '2.6.0'
+    
     // Create start scripts
     // Is executed on "build" task but not on e.g. "jar" task
     id 'application'
@@ -27,7 +30,6 @@ plugins {
 }
 
 group 'de.debuglevel.omnitrackerlayoutmanager'
-version '0.0.2-SNAPSHOT'
 
 // application plugin configuration
 applicationName = "omnitrackerlayoutmanager"

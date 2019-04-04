@@ -63,6 +63,6 @@ this tool) and the Base64 encoded content (as stored in the database).
 
 # Security
 For MSSQL, you should create a special user which can only access the
-`layouts` table (read for `export`, write for `import`). For `list`,
-also read-only access to `folders` and `stringTranslations` is needed.
+`Layout` table (read for `export`, write for `import`). For `list`,
+also read-only access to `ProblemArea` and `StringTranslations` is needed.
 

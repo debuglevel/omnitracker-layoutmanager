@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
 import de.debuglevel.omnitrackerdatabasebinding.OmnitrackerDatabase
 import de.debuglevel.omnitrackerdatabasebinding.models.Layout
+import de.debuglevel.omnitrackerdatabasebinding.models.LayoutOutputType
 import mu.KotlinLogging
 import java.io.File
 import java.time.LocalDateTime
@@ -95,10 +96,13 @@ class Export : CliktCommand(help = "Export layout") {
 class List : CliktCommand(help = "List all layouts") {
     override fun run() {
         logger.debug("Getting layouts from database...")
+
+        val maxOutputTypeLength = LayoutOutputType.values().map { it.name.length }.max() ?: 0
+
         OmnitrackerDatabase().layouts
             .values
             .sortedBy { "${it.folder?.path}\\\${it.name}" }
-            .forEach { println("${it.id}\t| ${it.folder?.path}\\${it.name}") }
+            .forEach { println("${it.id}\t| ${it.outputType.toString().padEnd(maxOutputTypeLength)} | ${it.folder?.path}\\${it.name}") }
     }
 }
 

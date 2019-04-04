@@ -97,7 +97,7 @@ class List : CliktCommand(help = "List all layouts") {
         logger.debug("Getting layouts from database...")
         OmnitrackerDatabase().layouts
             .values
-            .sortedBy { it.id }
+            .sortedBy { "${it.folder?.path}\\\${it.name}" }
             .forEach { println("${it.id}\t| ${it.folder?.path}\\${it.name}") }
     }
 }

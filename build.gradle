@@ -99,3 +99,9 @@ buildScan {
     // Always publish scan (no more need for --scan option)
     publishAlways()
 }
+
+// Configuration of net.researchgate.release plugin
+release {
+    failOnCommitNeeded = false
+    failOnUnversionedFiles = false
+}

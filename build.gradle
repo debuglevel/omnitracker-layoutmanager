@@ -63,7 +63,7 @@ dependencies {
     implementation 'com.github.ajalt:clikt:1.6.0'
 
     // OMNITRACKER
-    implementation "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.13"
+    implementation "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.14"
 }
 
 

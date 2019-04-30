@@ -103,7 +103,7 @@ class List : CliktCommand(help = "List all layouts") {
         OmnitrackerDatabase().layouts
             .values
             .sortedBy { "${it.folder?.path}\\\${it.name}" }
-            .forEach { println("${it.id}\t| ${it.outputType.toString().padEnd(maxOutputTypeLength)} | ${it.folder?.path}\\${it.name}") }
+            .forEach { println("${it.id}\t| ${it.outputType.toString().padEnd(maxOutputTypeLength)} | ${it.outputType?.fileExtension} | ${it.folder?.path}\\${it.name}") }
     }
 }
 

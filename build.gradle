@@ -64,6 +64,9 @@ dependencies {
 
     // OMNITRACKER
     implementation "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.14"
+
+    // CSV
+    implementation 'com.opencsv:opencsv:4.1'
 }
 
 

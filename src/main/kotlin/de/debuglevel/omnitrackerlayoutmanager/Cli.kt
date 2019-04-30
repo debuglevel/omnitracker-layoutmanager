@@ -82,13 +82,14 @@ class Export : CliktCommand(help = "Export layout") {
         }
 
         fun exportLayout(layout: Layout, exportFile: File, base64: Boolean = false) {
-            if (base64) {
+            val bytes = if (base64) {
                 logger.debug("Writing Base64 encoded report data (e.g. original database content) to file '${exportFile.absolutePath}'...")
-                exportFile.writeBytes(layout.reportDataBase64.toByteArray())
+                layout.reportDataBase64.toByteArray()
             } else {
                 logger.debug("Writing binary report data to file '${exportFile.absolutePath}'...")
-                exportFile.writeBytes(layout.reportData)
+                layout.reportData
             }
+            exportFile.writeBytes(bytes)
         }
     }
 }

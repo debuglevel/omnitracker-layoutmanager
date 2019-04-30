@@ -7,7 +7,6 @@ import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
 import com.opencsv.CSVWriter
-import com.opencsv.bean.CsvBindByPosition
 import com.opencsv.bean.StatefulBeanToCsvBuilder
 import de.debuglevel.omnitrackerdatabasebinding.OmnitrackerDatabase
 import de.debuglevel.omnitrackerdatabasebinding.models.Layout
@@ -126,13 +125,9 @@ class List : CliktCommand(help = "List all layouts") {
     }
 
     data class LayoutDTO(
-        @CsvBindByPosition(position = 0)
         val id: Int,
-        @CsvBindByPosition(position = 1)
         val outputType: String,
-        @CsvBindByPosition(position = 2)
         val fileExtension: String,
-        @CsvBindByPosition(position = 3)
         val name: String
     )
 }

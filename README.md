@@ -50,7 +50,7 @@ $ java -jar .\build\libs\omnitrackerlayoutmanager-0.0.1-SNAPSHOT-all.jar export 
 
 ## Export all layouts (using PowerShell)
 ```
-PS> .\bin\omnitrackerlayoutmanager.bat list | ForEach-Object { New-Object PSObject -Property @{ 'id' = $_.Split("`t")[0]; 'extension' = $_.Split("|")[2].Trim() } } | ForEach-Object { .\bin\omnitrackerlayoutmanager.bat export $_.id "export_$($_.id).$($_.extension)" }
+PS> .\bin\omnitrackerlayoutmanager.bat list > .\layouts.csv ; Import-Csv -Path .\layouts.csv | ForEach-Object { .\bin\omnitrackerlayoutmanager.bat export $_.id "export_$($_.id).$($_.fileExtension)" }
 ```
 
 ## Import layout

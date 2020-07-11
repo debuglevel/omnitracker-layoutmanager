@@ -1,3 +1,5 @@
+**The idea of this project will be integrated into OMNITRACKER Internals at https://github.com/debuglevel/omnitracker-internals and receive no further updates.**
+
 OMNITRACKER stores layouts (templates used for Crystal Reports and Word
 Mail Merge) in the `layouts` database table (Base64 encoded).
 Unfortunately, there seems to be no option to update a file (without

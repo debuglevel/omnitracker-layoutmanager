@@ -17,6 +17,9 @@ plugins {
     // Gradle dependency update checker; run by "dependencyUpdates" task
     id "com.github.ben-manes.versions" version "0.20.0"
 
+    // Release version with "gradle release"
+    id 'net.researchgate.release' version '2.6.0'
+    
     // Create start scripts
     // Is executed on "build" task but not on e.g. "jar" task
     id 'application'
@@ -27,7 +30,6 @@ plugins {
 }
 
 group 'de.debuglevel.omnitrackerlayoutmanager'
-version '0.0.2-SNAPSHOT'
 
 // application plugin configuration
 applicationName = "omnitrackerlayoutmanager"
@@ -61,7 +63,10 @@ dependencies {
     implementation 'com.github.ajalt:clikt:1.6.0'
 
     // OMNITRACKER
-    implementation "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.12"
+    implementation "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.16"
+
+    // CSV
+    implementation 'com.opencsv:opencsv:4.1'
 }
 
 
@@ -96,4 +101,10 @@ buildScan {
 
     // Always publish scan (no more need for --scan option)
     publishAlways()
+}
+
+// Configuration of net.researchgate.release plugin
+release {
+    failOnCommitNeeded = false
+    failOnUnversionedFiles = false
 }

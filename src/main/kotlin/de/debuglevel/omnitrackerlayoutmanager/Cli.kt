@@ -6,12 +6,16 @@ import com.github.ajalt.clikt.output.TermUi.echo
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
+import com.opencsv.CSVWriter
+import com.opencsv.bean.StatefulBeanToCsvBuilder
 import de.debuglevel.omnitrackerdatabasebinding.OmnitrackerDatabase
 import de.debuglevel.omnitrackerdatabasebinding.models.Layout
 import mu.KotlinLogging
 import java.io.File
+import java.io.StringWriter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+
 
 private val logger = KotlinLogging.logger {}
 
@@ -81,13 +85,14 @@ class Export : CliktCommand(help = "Export layout") {
         }
 
         fun exportLayout(layout: Layout, exportFile: File, base64: Boolean = false) {
-            if (base64) {
+            val bytes = if (base64) {
                 logger.debug("Writing Base64 encoded report data (e.g. original database content) to file '${exportFile.absolutePath}'...")
-                exportFile.writeBytes(layout.reportDataBase64.toByteArray())
+                layout.reportDataBase64.toByteArray()
             } else {
                 logger.debug("Writing binary report data to file '${exportFile.absolutePath}'...")
-                exportFile.writeBytes(layout.reportData)
+                layout.reportData
             }
+            exportFile.writeBytes(bytes)
         }
     }
 }
@@ -95,11 +100,36 @@ class Export : CliktCommand(help = "Export layout") {
 class List : CliktCommand(help = "List all layouts") {
     override fun run() {
         logger.debug("Getting layouts from database...")
-        OmnitrackerDatabase().layouts
-            .values
-            .sortedBy { it.id }
-            .forEach { println("${it.id}\t| ${it.folder?.path}\\${it.name}") }
+        println(OmnitrackerDatabase().layouts.values.toCSV())
     }
+
+    private fun Collection<Layout>.toCSV(): String {
+        val layoutDTOs = map {
+            LayoutDTO(
+                it.id,
+                it.outputType.toString(),
+                it.outputType?.fileExtension ?: "unknown",
+                "${it.folder?.path}\\${it.name}"
+            )
+        }
+
+        val writer = StringWriter()
+        val statefulBeanToCsv = StatefulBeanToCsvBuilder<LayoutDTO>(writer)
+            .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+            .build()
+
+        statefulBeanToCsv.write(layoutDTOs)
+        writer.close()
+
+        return writer.toString()
+    }
+
+    data class LayoutDTO(
+        val id: Int,
+        val outputType: String,
+        val fileExtension: String,
+        val name: String
+    )
 }
 
 fun main(args: Array<String>) = OmnitrackerLayoutManager()
